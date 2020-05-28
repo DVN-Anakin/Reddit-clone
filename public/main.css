@@ -2,11 +2,6 @@ body {
     min-height: 2000px;
     padding-top: 70px;
 }
-
-body {
-    min-height: 2000px;
-    padding-top: 70px;
-  }
   
 .content {
     display: flex;
@@ -26,12 +21,4 @@ h3 {
 
 .add-post {
     margin: 7px 0;
-}
-
-.arrow {
-    cursor: pointer;
-}
-
-.arrow::selection {
-    background-color: inherit;
 }

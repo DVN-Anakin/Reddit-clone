@@ -14,7 +14,7 @@
     </head>
 
     <body>
-        <nav class="navbar navbar-light navbar-fixed-top">
+        <nav class="navbar navbar-default navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -31,11 +31,47 @@
                         <li><a href="#about">About</a></li>
                         <li><a href="#contact">Contact</a></li>
                     </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <button type="button" class="btn btn-primary add-post" data-toggle="modal" data-target="#addPost">Add Post</button>
+                        </li>
+                    </ul>
                 </div>
-        </div>
+            </div>
         </nav>
 
         <div class="container">
+            <h1 id="loadingMsg">Loading...</h1>
+
+            <div class="modal fade" id="addPost" tabindex="-1" role="dialog" aria-labelledby="addNewPost">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Add New Post</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="inputURL">URL</label>
+                                <input type="text" class="form-control" id="inputURL" placeholder="">
+                            </div>
+                            <div class="form-group">
+                                <label for="inputTitle">Title</label>
+                                <input type="text" class="form-control" id="inputTitle">
+                            </div>
+                            <div class="form-group">
+                                <label for="inputUser">Your Name</label>
+                                <input type="text" class="form-control" id="inputUser">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" id="sharePost">Share!</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <ul id="list" class="list-unstyled"></ul>
 
             <template id="content-template">

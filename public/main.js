@@ -13,7 +13,7 @@ $(document).ready(function() {
     var db = firebase.database();
 
     db.ref('/posts').once('value').then(function(snapshot) {
-        var results = snapshot.val();
+        var results = snapshot.val();   // snapshot is an object containing all posts
 
         for (id in results) {
             buildPostElement(results[id]);
@@ -27,7 +27,7 @@ $(document).ready(function() {
     function buildPostElement(item) {
         var $template = $('#content-template').clone();
         var newItem = $template.prop('content');
-        var timeFromNow = moment(item.createdAt).timeFromNow();
+        var timeFromNow = moment(item.createdAt).fromNow();
     
         $(newItem).find('.content-title').text(item.title);
         $(newItem).find('.votes').text(item.votes);
@@ -36,4 +36,33 @@ $(document).ready(function() {
     
         $('#list').append(newItem);
     }
+
+    $('#sharePost').on('click', function() {
+        var link = $('#inputURL').val();
+        var title = $('#inputTitle').val();
+        var user = $('#inputUser').val();
+        var createdAt = Date.now();
+        var votes = 0;
+    
+        var data = {
+            link: link,
+            title: title,
+            user: user,
+            createdAt: createdAt,
+            votes: votes
+        };
+    
+        var postsListRef = db.ref('posts');
+        var newPostRef = postsListRef.push(data, function(err) {
+            if (err) {
+                console.log('Error saving to firebase', err);
+            } else {
+                //console.log('Success saving to firebase!');
+                $('#inputURL').val('');
+                $('#inputTitle').val('');
+                $('#inputUser').val('');
+                $('#addPost').modal('hide');
+            }
+        });
+    });
 })
