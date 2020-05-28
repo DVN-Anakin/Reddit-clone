@@ -12,17 +12,9 @@ $(document).ready(function() {
     firebase.initializeApp(firebaseConfig);
     var db = firebase.database();
 
-    db.ref('/posts').once('value').then(function(snapshot) {
-        var results = snapshot.val();   // snapshot is an object containing all posts
-
-        for (id in results) {
-            buildPostElement(results[id]);
-        }
-    })
-
     var DAY_IN_MS = 86400000;
 
-    db.ref('/posts')
+    db.ref('posts')
         .orderByChild('createdAt')      // need to order it before applying filter, note: Firebase can only order by ascending
         .startAt(Date.now() - DAY_IN_MS)   // filter those posts created within last 24 hours 
         .on('child_added', function(snapshot) {
@@ -31,8 +23,31 @@ $(document).ready(function() {
             }
             var result = snapshot.val();
             result.id = snapshot.key;
-            buildItemElement(result);
+            buildPostElement(result);
         });
+
+    db.ref('posts')
+        .on('child_changed', function(snapshot) {
+            var result = snapshot.val();
+            result.id = snapshot.key;
+            $('div.votes#'+result.id).text(result.votes);
+        });
+
+    function upVote() {
+        var itemID = $(this).attr('id');
+        db.ref('/posts/' + itemID + '/votes')
+            .transaction(function(currentVotes) {
+                return currentVotes + 1;
+            });
+    }
+    
+    function downVote() {
+        var itemID = $(this).attr('id');
+        db.ref('/posts/' + itemID + '/votes')
+            .transaction(function(currentVotes) {
+                return currentVotes - 1;
+            });
+    }
 
     /**
      * Creating an html element
@@ -45,7 +60,9 @@ $(document).ready(function() {
     
         $(newItem).find('.content-title').text(item.title);
         $(newItem).find('.arrow').attr('id', item.id);
-        $(newItem).find('.votes').text(item.votes);
+        $(newItem).find('.vote-up').on('click', upVote);
+        $(newItem).find('.vote-down').on('click', downVote);
+        $(newItem).find('.votes').text(item.votes).attr('id', item.id);
         $(newItem).find('.content-link').attr('href', item.link).attr('target', '_blank');
         $(newItem).find('.content-meta').text(item.user + ' posted at ' + timeFromNow);
     
@@ -70,9 +87,9 @@ $(document).ready(function() {
         var postsListRef = db.ref('posts');
         var newPostRef = postsListRef.push(data, function(err) {
             if (err) {
-                console.log('Error saving to firebase', err);
+                alert('Error saving to firebase: ' + err);
             } else {
-                //console.log('Success saving to firebase!');
+                //alert('Success saving to firebase!');
                 $('#inputURL').val('');
                 $('#inputTitle').val('');
                 $('#inputUser').val('');

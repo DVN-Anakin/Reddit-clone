@@ -14,24 +14,21 @@
     </head>
 
     <body>
-        <nav class="navbar navbar-default navbar-fixed-top">
+        <nav class="navbar navbar-expand-md navbar-light bg-light navbar-fixed-top">
             <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
+                <!-- <div class="navbar-header"> -->
+                    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse" aria-expanded="false" aria-controls="navbar">
+                        <span class="navbar-toggler-icon"></span>
                     </button>
                     <a class="navbar-brand" href="#">Reddit Clone</a>
-                </div>
-                <div id="navbar" class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li class="active"><a href="#">Home</a></li>
-                        <li><a href="#about">About</a></li>
-                        <li><a href="#contact">Contact</a></li>
+                <!-- </div> -->
+                <div id="navbarCollapse" class="navbar-collapse collapse">
+                    <ul class="navbar-nav">
+                        <li><a href="#" class="nav-item nav-link active">Home</a></li>
+                        <li><a href="#about" class="nav-item nav-link">About</a></li>
+                        <li><a href="#contact" class="nav-item nav-link">Contact</a></li>
                     </ul>
-                    <ul class="nav navbar-nav navbar-right">
+                    <ul class="navbar-nav ml-auto">
                         <li>
                             <button type="button" class="btn btn-primary add-post" data-toggle="modal" data-target="#addPost">Add Post</button>
                         </li>
@@ -76,12 +73,12 @@
 
             <template id="content-template">
                 <li class="content row">
-                    <div class="content-votes col-xs-1">
+                    <div class="content-votes">
                         <div class="arrow vote-up">&bigtriangleup;</div>
                         <div class="votes"></div>
                         <div class="arrow vote-down">&bigtriangledown;</div>
                     </div>
-                    <div class="content-main col-xs-9">
+                    <div class="content-main">
                         <a class="content-link"><h3 class="content-title"></h3></a>
                         <p class="content-meta"></p>
                     </div>
