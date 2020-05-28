@@ -20,6 +20,20 @@ $(document).ready(function() {
         }
     })
 
+    var DAY_IN_MS = 86400000;
+
+    db.ref('/posts')
+        .orderByChild('createdAt')      // need to order it before applying filter, note: Firebase can only order by ascending
+        .startAt(Date.now() - DAY_IN_MS)   // filter those posts created within last 24 hours 
+        .on('child_added', function(snapshot) {
+            if ($('#loadingMsg').is(':visible')) {
+                $('#loadingMsg').hide();
+            }
+            var result = snapshot.val();
+            result.id = snapshot.key;
+            buildItemElement(result);
+        });
+
     /**
      * Creating an html element
      * parameter: item - an object with post's data e.g. { title: 'My video!', link: 'https://www.youtube.com', votes: 9, user: 'Tony Stark', createdAt: 1512089554880 }
@@ -30,11 +44,12 @@ $(document).ready(function() {
         var timeFromNow = moment(item.createdAt).fromNow();
     
         $(newItem).find('.content-title').text(item.title);
+        $(newItem).find('.arrow').attr('id', item.id);
         $(newItem).find('.votes').text(item.votes);
         $(newItem).find('.content-link').attr('href', item.link).attr('target', '_blank');
         $(newItem).find('.content-meta').text(item.user + ' posted at ' + timeFromNow);
     
-        $('#list').append(newItem);
+        $('#list').prepend(newItem);
     }
 
     $('#sharePost').on('click', function() {
